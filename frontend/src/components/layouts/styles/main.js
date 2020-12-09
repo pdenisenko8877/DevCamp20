@@ -1,6 +1,6 @@
 import { createStyles } from '@material-ui/core/styles';
 
-import { layoutHorizontalPadding, colorWhite } from '../../../styles/variables';
+import { layoutHorizontalPadding, colorWhite } from 'styles/variables';
 
 export default theme =>
   createStyles({

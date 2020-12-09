@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 
-import HomePage from './Main/HomePage';
+import HomePage from 'containers/Main/HomePage';
 
 function App() {
   return (

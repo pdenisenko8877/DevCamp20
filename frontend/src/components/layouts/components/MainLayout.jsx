@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import logo from '../../../images/logo.svg';
+import logo from 'images/logo.svg';
 
 import styles from '../styles/main';
 

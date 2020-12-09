@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom';
 //Styles
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from './styles/theme';
-import { CustomStyle } from './styles/custom-styles';
+import theme from 'styles/theme';
+import { CustomStyle } from 'styles/custom-styles';
 
 // Import root app
-import App from './containers/App';
+import App from 'containers/App';
 
 import reportWebVitals from './reportWebVitals';
 

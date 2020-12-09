@@ -1,7 +1,7 @@
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 
-import { bgBody } from './variables';
+import { bgBody } from 'styles/variables';
 
 const breakpoints = createBreakpoints({});
 

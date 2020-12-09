@@ -2,7 +2,7 @@ import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
 
-import { MainLayout } from '../../../components/layouts';
+import { MainLayout } from 'components/layouts';
 
 function HomePage() {
   return (
