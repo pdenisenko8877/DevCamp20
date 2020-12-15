@@ -8,24 +8,19 @@ import { MainLayout } from 'components/layouts';
 import { ProfileForm } from 'components/Users';
 import { Article, ArticleForm } from 'components/Articles';
 
-function HomePage() {
-  const [state, setState] = useState({
-    article: false,
-    addArticle: false,
-    profile: true,
-  });
-  const { article, addArticle, profile } = state;
-  const [name, setName] = useState(undefined);
-  const [surname, setSurname] = useState(undefined);
+import { ACTIONS } from './constants';
 
-  const handleButtonClick = newState => () => {
-    setState({ ...newState });
+function HomePage() {
+  const [action, setAction] = useState(ACTIONS.PROFILE);
+  const [username, setUsername] = useState(undefined);
+
+  const handleButtonClick = value => {
+    setAction(value);
   };
 
   const handleProfileSubmit = event => {
     event.preventDefault();
-    setName(event.target[0].value);
-    setSurname(event.target[2].value);
+    setUsername(`${event.target[0].value} ${event.target[2].value}`);
   };
 
   return (
@@ -33,35 +28,18 @@ function HomePage() {
       headerAction={
         <>
           <Box mr={1}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleButtonClick({ article: true, addArticle: false, profile: false })}
-            >
+            <Button variant="contained" color="secondary" onClick={() => handleButtonClick(ACTIONS.ARTICLES)}>
               Articles
             </Button>
           </Box>
           <Box mr={1}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleButtonClick({ article: false, addArticle: true, profile: false })}
-            >
+            <Button variant="contained" color="secondary" onClick={() => handleButtonClick(ACTIONS.ADD_ARTICLES)}>
               Add Articles
             </Button>
           </Box>
           <Box mr={1}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleButtonClick({ article: false, addArticle: false, profile: true })}
-            >
-              Profile&nbsp;
-              {(name || surname) && (
-                <>
-                  ({name} {surname})
-                </>
-              )}
+            <Button variant="contained" color="secondary" onClick={() => handleButtonClick(ACTIONS.PROFILE)}>
+              Profile {username}
             </Button>
           </Box>
         </>
@@ -70,9 +48,9 @@ function HomePage() {
       <Typography variant="h4" component="h1" gutterBottom>
         The Net - <span className="font-normal">First Social Network</span>
       </Typography>
-      {article && <Article />}
-      {addArticle && <ArticleForm />}
-      {profile && <ProfileForm handleSubmit={handleProfileSubmit} />}
+      {action === ACTIONS.ARTICLES && <Article />}
+      {action === ACTIONS.ADD_ARTICLES && <ArticleForm />}
+      {action === ACTIONS.PROFILE && <ProfileForm handleSubmit={handleProfileSubmit} />}
     </MainLayout>
   );
 }
