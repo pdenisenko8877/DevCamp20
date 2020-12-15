@@ -15,7 +15,7 @@ import styles from '../styles/main';
 
 const useStyles = makeStyles(styles);
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, headerAction }) => {
   const classes = useStyles();
 
   return (
@@ -26,9 +26,12 @@ const MainLayout = ({ children }) => {
             <img className={classes.headerLogo} src={logo} alt="The Net" />
             <div className={classes.headerSiteName}>The Net</div>
           </Box>
-          <IconButton color="inherit">
-            <AccountCircleIcon />
-          </IconButton>
+          <Box display="flex" alignItems="center">
+            {headerAction}
+            <IconButton color="inherit">
+              <AccountCircleIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <main className={classes.mainContainer}>
