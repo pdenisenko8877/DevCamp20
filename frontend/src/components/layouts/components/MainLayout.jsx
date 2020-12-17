@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import cx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -40,6 +41,11 @@ const MainLayout = ({ children, headerAction }) => {
       </main>
     </Container>
   );
+};
+
+MainLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+  headerAction: PropTypes.node,
 };
 
 export default memo(MainLayout);
