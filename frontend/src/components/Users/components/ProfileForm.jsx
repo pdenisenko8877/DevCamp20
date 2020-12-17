@@ -9,7 +9,11 @@ import Grid from '@material-ui/core/Grid';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 
-function ProfileForm({ handleSubmit }) {
+import { userType, fileType, articleType } from '../types';
+
+function ProfileForm({ handleSubmit, userData }) {
+  console.log(userData);
+
   return (
     <Grid container>
       <Grid item xs={12} sm={5}>
@@ -34,6 +38,15 @@ function ProfileForm({ handleSubmit }) {
 
 ProfileForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  userData: PropTypes.shape({
+    userType,
+    avatar: PropTypes.shape({
+      fileId: PropTypes.number,
+      file: fileType,
+    }),
+    friends: PropTypes.arrayOf(userType),
+    articles: PropTypes.arrayOf(articleType),
+  }),
 };
 
 export default ProfileForm;
