@@ -16,7 +16,7 @@ export const fileType = PropTypes.shape({
 
 export const likeType = PropTypes.shape({
   userId: PropTypes.number,
-  user: PropTypes.objectOf(PropTypes.number),
+  user: userType,
   date: PropTypes.string,
 });
 
