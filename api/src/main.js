@@ -1,15 +1,35 @@
-const express = require('express');
+require("dotenv").config({ path: "../.env", silent: true });
+
+const express = require("express");
 const app = express();
-const port = 5333;
+const port = process.env.PORT;
 
-app.get('/:name', (req, res) => {
-    res.send(`Hello ${req.params.name}!`)
+
+const envParam = function(req, res, next) {
+  res.params = {
+    port: process.env.PORT,
+    host: process.env.HOST
+  };
+  next();
+};
+app.use(envParam);
+
+app.get("/", (req, res) => {
+  res.send(
+    `Api server! Run on ${res.params.host} used ${res.params.port} port`
+  );
 });
 
-app.use( (req, res) => {
-    res.status(404).send('Enter your name in the address bar (example: /Ann).');
-});
+
+function errorHandler (err, req, res, next) {
+    res.status(500);
+    res.render('error', { error: err })
+}
+
+app.use(errorHandler);
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+  console.log(
+    `Example app listening at http://${process.env.HOST}:${port}`
+  );
 });

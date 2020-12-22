@@ -4,11 +4,16 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "start": "nodemon -r dotenv/config src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "dotenv": "8.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.6"
   }
 }
