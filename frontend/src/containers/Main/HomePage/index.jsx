@@ -10,6 +10,37 @@ import { Article, ArticleForm } from 'components/Articles';
 
 import { ACTIONS } from './constants';
 
+//TODO: Test example API data
+const userData = {
+  id: 1,
+  firstName: 'Ivan',
+  lastName: 'Ivanov',
+  age: 25,
+  avatar: {
+    fileId: 1,
+    file: {
+      id: 1,
+      name: 'photo.jpg',
+      path: '/upload/photo.jpg',
+      size: 1234,
+    },
+  },
+  friends: [{}, {}, {}], //array of users
+  articles: [
+    {
+      title: 'Article 1',
+      text: 'Some text',
+      images: [{}, {}, {}], // array of files
+      createdAt: '2020-12-17 19:00:00',
+      editedAt: '2020-12-17 20:00:00',
+      likes: [
+        { userId: 2, user: { id: 2 }, date: '2020-12-17 21:00:00' },
+        { userId: 3, user: { id: 3 }, date: '2020-12-17 22:00:00' },
+      ],
+    },
+  ],
+};
+
 function HomePage() {
   const [action, setAction] = useState(ACTIONS.PROFILE);
   const [username, setUsername] = useState(undefined);
@@ -50,7 +81,7 @@ function HomePage() {
       </Typography>
       {action === ACTIONS.ARTICLES && <Article />}
       {action === ACTIONS.ADD_ARTICLES && <ArticleForm />}
-      {action === ACTIONS.PROFILE && <ProfileForm handleSubmit={handleProfileSubmit} />}
+      {action === ACTIONS.PROFILE && <ProfileForm handleSubmit={handleProfileSubmit} userData={userData} />}
     </MainLayout>
   );
 }
