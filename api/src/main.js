@@ -2,7 +2,7 @@ require("dotenv").config({ path: "../.env", silent: true });
 
 const express = require("express");
 const app = express();
-// const port = process.env.PORT;
+const port = process.env.PORT;
 
 
 const envParam = function(req, res, next) {
@@ -28,8 +28,8 @@ function errorHandler (err, req, res, next) {
 
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
   console.log(
-    `Example app listening at http://${process.env.HOST}:${process.env.PORT}`
+    `Example app listening at http://${process.env.HOST}:${port}`
   );
 });
