@@ -4,6 +4,10 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT;
 
+//Routes
+const routesPosts = require('./routes/posts');
+
+app.use('/posts', routesPosts);
 
 const envParam = function(req, res, next) {
   res.params = {
