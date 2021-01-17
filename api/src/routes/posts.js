@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const db = require('../configs/db.config');
 
 router.route('/')
-  .get(function (req, res) {
-    res.send('Get Posts Lists');
+  .get(async (req, res) => {
+    res.send(await db.select().from('posts'));
   })
   .put(function (req, res) {
     res.send('Create New Post');
