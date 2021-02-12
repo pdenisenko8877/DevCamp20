@@ -3,11 +3,19 @@ require('dotenv').config({ path: '../.env', silent: true });
 const express = require('express');
 const app = express();
 const port = process.env.PORT;
+const cors = require('cors');
+
+const corsOptions = {
+  origin: 'http://localhost:3100', // process.env.FRONT_URL
+};
+
+app.use(cors(corsOptions));
 
 const passport = require('./auth/passport');
 const authRequest = require('./auth/request-auth');
 
 //Routes
+const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
 
@@ -15,6 +23,8 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(authRequest);
 
+//Auth
+app.use('/auth', authRoutes);
 //Users
 app.use('/users', usersRoutes);
 //Posts
