@@ -28,22 +28,23 @@ class Posts {
 
   static async createPost(post) {
     return db(Posts.tableName).insert({
-      title: post.title,
-      content: post.content,
+      title: post.body.title,
+      content: post.body.content,
+      user_id: post.user.id,
     });
   }
 
   static async updatePost(post) {
     return db(Posts.tableName)
-      .where('id', '=', post.id)
+      .where('id', '=', post.body.id)
       .update({
-        title: post.title,
-        content: post.content,
+        title: post.body.title,
+        content: post.body.content,
       });
   }
   static async deletePost(post) {
     return db(Posts.tableName)
-      .where('id', '=', post.id)
+      .where('id', '=', post.params.id)
       .del();
   }
 }

@@ -7,8 +7,8 @@ router
   .get(async (req, res) => {
     res.send(await Posts.getPosts());
   })
-  .put(async (req, res) => {
-    await Posts.createPost(req.body).then(res.send('Create New Post'));
+  .put((req, res) => {
+    Posts.createPost(req).then(res.send('Create New Post'));
   });
 
 router
@@ -19,7 +19,7 @@ router
   .put([
     checkAuthorized({ table: 'posts' }),
     (req, res) => {
-      Posts.updatePost(req.body).then(
+      Posts.updatePost(req).then(
         res.send(`Update Post ID: ${req.params.id}`),
       );
     },
@@ -27,7 +27,7 @@ router
   .delete([
     checkAuthorized({ table: 'posts' }),
     (req, res) => {
-      Posts.deletePost(req.body).then(
+      Posts.deletePost(req).then(
         res.send(`Delete Post ID: ${req.params.id}`),
       );
     },

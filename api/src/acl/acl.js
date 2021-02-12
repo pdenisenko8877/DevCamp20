@@ -1,6 +1,6 @@
 const db = require('../configs/db.config');
 
-module.exports = function checkAuthorized({ table, column = 'userId' }) {
+module.exports = function checkAuthorized({ table, column = 'user_id' }) {
   return async (req, res, next) => {
     const { user } = req;
 
