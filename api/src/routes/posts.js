@@ -1,23 +1,36 @@
 const router = require('express').Router();
-const db = require('../configs/db.config');
+const Posts = require('../models/posts');
+const checkAuthorized = require('../acl/acl');
 
-router.route('/')
+router
+  .route('/')
   .get(async (req, res) => {
-    res.send(await db.select().from('posts'));
+    res.send(await Posts.getPosts());
   })
-  .put(function (req, res) {
-    res.send('Create New Post');
+  .put(async (req, res) => {
+    await Posts.createPost(req.body).then(res.send('Create New Post'));
   });
 
-router.route('/:id')
-  .get(function (req, res) {
-    res.send(`Get Post ID: ${req.params.id}`);
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    res.send(await Posts.getPost(req.params.id));
   })
-  .put(function (req, res) {
-    res.send(`Update Post ID: ${req.params.id}`);
-  })
-  .delete(function (req, res) {
-    res.send(`Delete Post ID: ${req.params.id}`);
-  });
+  .put([
+    checkAuthorized({ table: 'posts' }),
+    (req, res) => {
+      Posts.updatePost(req.body).then(
+        res.send(`Update Post ID: ${req.params.id}`),
+      );
+    },
+  ])
+  .delete([
+    checkAuthorized({ table: 'posts' }),
+    (req, res) => {
+      Posts.deletePost(req.body).then(
+        res.send(`Delete Post ID: ${req.params.id}`),
+      );
+    },
+  ]);
 
 module.exports = router;
