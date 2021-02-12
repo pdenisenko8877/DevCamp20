@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const passport = require('../auth/passport');
 const User = require('../models/users');
-const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res) => {
@@ -40,8 +39,6 @@ exports.login = (req, res) =>
         audience: process.env.HOST,
       });
 
-      await User.updateUserToken(user, uuidv4());
-
       res.send({ token: jwtToken });
     },
   )(req, res);
@@ -57,19 +54,16 @@ exports.loginGoogle = (req, res) =>
         throw new Error(trace.message || 'Authentication error');
       }
 
-      const jwtToken = jwt.sign(user, process.env.JWT_SECRET, {
+      let systemUser = await User.findByEmail(user.email);
+
+      if (!systemUser) {
+        systemUser = await User.createSocialUser(user);
+      }
+
+      const jwtToken = jwt.sign(systemUser, process.env.JWT_SECRET, {
         expiresIn: '1d',
         audience: process.env.HOST,
       });
-
-      const userEmailMatch = await User.findByEmail(user.email);
-
-
-      if (userEmailMatch) {
-        await User.updateUserToken(user, uuidv4());
-      } else {
-        await User.createSocialUser(user, uuidv4());
-      }
 
       res.send({ token: jwtToken });
     },

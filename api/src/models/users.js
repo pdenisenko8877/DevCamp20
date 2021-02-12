@@ -36,11 +36,10 @@ class User {
     });
   }
 
-  static async createSocialUser(user, token) {
+  static async createSocialUser(user) {
     return db(User.tableName).insert({
       name: user.name,
       email: user.email,
-      accessToken: token,
     });
   }
 
