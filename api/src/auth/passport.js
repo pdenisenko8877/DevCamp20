@@ -1,6 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const BearerStrategy = require('passport-http-bearer').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const GoogleStrategy = require('./strategies/google');
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
 
@@ -26,10 +28,21 @@ passport.use(
 );
 
 passport.use(
-  new BearerStrategy(async function(token, done) {
-    const user = await User.findByToken(token);
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: process.env.JWT_SECRET,
+      audience: process.env.HOST,
+    },
+    function(jwt_payload, done) {
+      return done(null, jwt_payload);
+    },
+  ),
+);
 
-    return done(null, user);
+passport.use(
+  new GoogleStrategy(function(profile, done) {
+    return profile ? done(null, User.googleUserSanitize(profile)) : done('Google auth failed', null);
   }),
 );
 

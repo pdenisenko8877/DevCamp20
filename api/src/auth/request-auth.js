@@ -1,10 +1,9 @@
 const passport = require('./passport');
 
-module.exports = function(req, res, next) {
-  passport.authenticate('bearer', { session: false }, (err, user) => {
-    if (user) {
-      req.user = user;
-    }
+module.exports = function (req, res, next) {
+
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    req.user = user;
     next();
   })(req, res, next);
 };

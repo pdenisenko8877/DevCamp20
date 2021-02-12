@@ -6,6 +6,7 @@ import ArticlePage from 'containers/Main/ArticlePage';
 import ArticleCreatePage from 'containers/Main/ArticlePage/Create';
 import ProfilePage from 'containers/Main/ProfilePage';
 import ProfileEditPage from 'containers/Main/ProfilePage/Edit';
+import LoginPage from 'containers/Auth/LoginPage';
 
 function ProfileDateCheck() {
   const { date } = useParams();
@@ -38,6 +39,7 @@ function App() {
         >
           <ProfileDateCheck />
         </Route>
+        <Route exact path="/login" component={LoginPage} />
         <Redirect to="/home" />
       </Switch>
     </BrowserRouter>
