@@ -20,7 +20,7 @@ class Posts {
 
   static async getPost(id) {
     return db
-      .select('title', 'content')
+      .select('title', 'intro', 'content')
       .from(Posts.tableName)
       .where({ id })
       .first();
