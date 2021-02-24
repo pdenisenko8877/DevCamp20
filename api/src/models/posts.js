@@ -29,8 +29,9 @@ class Posts {
   static async createPost(post) {
     return db(Posts.tableName).insert({
       title: post.body.title,
+      intro: post.body.intro,
       content: post.body.content,
-      user_id: post.user.id,
+      // user_id: post.user.id,
     });
   }
 

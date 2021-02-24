@@ -1,37 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import KeyboardBackspaceRoundedIcon from '@material-ui/icons/KeyboardBackspaceRounded';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { getPost } from '../api';
 
 function Article() {
   const { id } = useParams();
 
-  const [post, setPost] = useState([]);
-
-  useEffect(
-    () =>
-      getPost(id)
-        .then(response => {
-          // handle success
-          setPost(response.data);
-        })
-        .catch(error => {
-          // handle error
-          console.log(error);
-        }),
-    [],
-  );
+  const { data } = useQuery('post', () => getPost(id));
+  const post = data?.data || [];
 
   return (
     <>
-      <Typography variant="h4" component="h3" gutterBottom>
-        {post.title}
-      </Typography>
+      <Box mb={3} display="flex" justifyContent="space-between">
+        <Typography variant="h4" component="h3">
+          {post.title}
+        </Typography>
+        <Button
+          color="primary"
+          component={Link}
+          startIcon={<EditOutlinedIcon />}
+          to={`/article/edit/${id}`}
+        >
+          Edit
+        </Button>
+      </Box>
       <Typography color="textSecondary" paragraph>
         {post.intro}
       </Typography>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -9,23 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import { getPostList } from '../api';
 
 function ArticleList() {
-  const [posts, setPosts] = useState([]);
+  const { data, isFetching } = useQuery('posts', () => getPostList());
+  const posts = data?.data || [];
 
-  useEffect(
-    () =>
-      getPostList()
-        .then(response => {
-          // handle success
-          setPosts(response.data);
-        })
-        .catch(error => {
-          // handle error
-          console.log(error);
-        }),
-    [],
-  );
-
-  return posts.length ? (
+  return isFetching ? (
+    <div>Loading...</div>
+  ) : posts.length ? (
     posts.map(({ id, title, intro }) => (
       <Box key={id} mb={2}>
         <Paper variant="outlined">
