@@ -11,8 +11,9 @@ function ArticleEditPage() {
   const { id } = useParams();
 
   const { data } = useQuery('post', () => getPost(id));
-  const post = data?.data || [];
+  const post = data?.data || {};
 
+  //TODO: Fix undefined data on reload page
   const initialPostData = {
     title: post.title,
     intro: post.intro,

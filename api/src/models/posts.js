@@ -11,10 +11,16 @@ class Posts {
       .first();
   }
 
-  static getPosts() {
+  static getPostsCount() {
+    return db.count().from(Posts.tableName);
+  }
+
+  static getPosts(limit, offset) {
     return db
       .select()
       .from(Posts.tableName)
+      .limit(limit)
+      .offset(offset)
       .orderBy('id');
   }
 

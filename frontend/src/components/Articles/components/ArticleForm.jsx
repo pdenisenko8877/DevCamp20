@@ -20,30 +20,26 @@ function ArticleForm({ onSubmit, initialData }) {
     onSubmit(data);
   };
 
-  const initialValues = useMemo(
-    () => ({
-      title: initialData ? initialData.title : '',
-      intro: initialData ? initialData.intro : '',
-      content: initialData ? initialData.content : '',
-      visibility: initialData ? initialData.visibility : 'all',
-    }),
-    [initialData],
-  );
+  const defaultData = {
+    title: '',
+    intro: '',
+    content: '',
+    visibility: 'all',
+  };
+
+  const initialValues = initialData || defaultData;
 
   const optionsVisibility = useMemo(
     () => [
       {
-        id: 1,
         value: 'all',
         label: 'All',
       },
       {
-        id: 2,
         value: 'friends',
         label: 'Friends',
       },
       {
-        id: 3,
         value: 'only_me',
         label: 'Only Me',
       },
@@ -86,8 +82,8 @@ function ArticleForm({ onSubmit, initialData }) {
                     size="small"
                     margin="normal"
                   >
-                    {optionsVisibility.map(option => (
-                      <MenuItem key={option.id} value={option.value}>
+                    {optionsVisibility.map((option, i) => (
+                      <MenuItem key={i} value={option.value}>
                         {option.label}
                       </MenuItem>
                     ))}

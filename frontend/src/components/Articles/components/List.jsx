@@ -14,11 +14,9 @@ function ArticleList() {
     'posts',
     getPostList,
     {
-      getNextPageParam: lastPage => lastPage.nextId ?? false,
+      getNextPageParam: lastPage => lastPage.nextPage ?? false,
     },
   );
-
-  console.log(data);
 
   return (
     <>
@@ -28,8 +26,8 @@ function ArticleList() {
         <span>Error: {error.message}</span>
       ) : (
         <>
-          {data.pages.map(page => (
-            <React.Fragment key={page.nextId}>
+          {data.pages.map((page, i) => (
+            <React.Fragment key={i}>
               {page.data.map(({ id, title, intro }) => (
                 <Box key={id} mb={2}>
                   <Paper variant="outlined">

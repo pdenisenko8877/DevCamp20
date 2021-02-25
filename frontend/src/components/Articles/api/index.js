@@ -1,6 +1,6 @@
 import apiClient from 'configs/axios';
 
-export const getPostList = async ({ pageParam = 0 }) => {
+export const getPostList = async ({ pageParam = 1 }) => {
   const res = await apiClient.get('/posts?cursor=' + pageParam);
   return res.data
 };

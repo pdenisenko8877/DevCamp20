@@ -14,7 +14,7 @@ function Article() {
   const { id } = useParams();
 
   const { data } = useQuery('post', () => getPost(id));
-  const post = data?.data || [];
+  const post = data?.data || {};
 
   return (
     <>
@@ -22,12 +22,7 @@ function Article() {
         <Typography variant="h4" component="h3">
           {post.title}
         </Typography>
-        <Button
-          color="primary"
-          component={Link}
-          startIcon={<EditOutlinedIcon />}
-          to={`/article/edit/${id}`}
-        >
+        <Button color="primary" component={Link} startIcon={<EditOutlinedIcon />} to={`/article/edit/${id}`}>
           Edit
         </Button>
       </Box>
