@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useInfiniteQuery } from 'react-query';
 
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -9,44 +10,54 @@ import Typography from '@material-ui/core/Typography';
 import { getPostList } from '../api';
 
 function ArticleList() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(
-    () =>
-      getPostList()
-        .then(response => {
-          // handle success
-          setPosts(response.data);
-        })
-        .catch(error => {
-          // handle error
-          console.log(error);
-        }),
-    [],
+  const { status, data, error, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    'posts',
+    getPostList,
+    {
+      getNextPageParam: lastPage => lastPage.nextPage ?? false,
+    },
   );
 
-  return posts.length ? (
-    posts.map(({ id, title, intro }) => (
-      <Box key={id} mb={2}>
-        <Paper variant="outlined">
-          <Box p={2}>
-            <Typography variant="h5" component="h3" gutterBottom>
-              <Link to={`/article/${id}`}>{title}</Link>
-            </Typography>
-            <Typography paragraph>{intro}</Typography>
-            <Box mt={1} display="flex" justifyContent="flex-end">
-              <Button variant="contained" color="primary" component={Link} to={`/article/${id}`}>
-                Read More
-              </Button>
-            </Box>
-          </Box>
-        </Paper>
-      </Box>
-    ))
-  ) : (
-    <Typography variant="h6" gutterBottom>
-      Empty Posts List
-    </Typography>
+  return (
+    <>
+      {status === 'loading' ? (
+        <p>Loading...</p>
+      ) : status === 'error' ? (
+        <span>Error: {error.message}</span>
+      ) : (
+        <>
+          {data.pages.map((page, i) => (
+            <React.Fragment key={i}>
+              {page.data.map(({ id, title, intro }) => (
+                <Box key={id} mb={2}>
+                  <Paper variant="outlined">
+                    <Box p={2}>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        <Link to={`/article/${id}`}>{title}</Link>
+                      </Typography>
+                      <Typography paragraph>{intro}</Typography>
+                      <Box mt={1} display="flex" justifyContent="flex-end">
+                        <Button variant="contained" color="primary" component={Link} to={`/article/${id}`}>
+                          Read More
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Paper>
+                </Box>
+              ))}
+            </React.Fragment>
+          ))}
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+          >
+            {isFetchingNextPage ? 'Loading more...' : hasNextPage ? 'Load More' : 'Nothing more to load'}
+          </Button>
+        </>
+      )}
+    </>
   );
 }
 

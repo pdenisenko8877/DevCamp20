@@ -11,10 +11,16 @@ class Posts {
       .first();
   }
 
-  static getPosts() {
+  static getPostsCount() {
+    return db.count().from(Posts.tableName);
+  }
+
+  static getPosts(limit, offset) {
     return db
       .select()
       .from(Posts.tableName)
+      .limit(limit)
+      .offset(offset)
       .orderBy('id');
   }
 
@@ -29,8 +35,9 @@ class Posts {
   static async createPost(post) {
     return db(Posts.tableName).insert({
       title: post.body.title,
+      intro: post.body.intro,
       content: post.body.content,
-      user_id: post.user.id,
+      // user_id: post.user.id,
     });
   }
 

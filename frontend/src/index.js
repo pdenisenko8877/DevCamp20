@@ -7,17 +7,24 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from 'styles/theme';
 import { CustomStyle } from 'styles/custom-styles';
 
+//Query
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 // Import root app
 import App from 'containers/App';
 
 import reportWebVitals from './reportWebVitals';
 
+const queryClient = new QueryClient();
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <React.StrictMode>
-      <App />
-      <CssBaseline />
-      <CustomStyle />
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <CssBaseline />
+        <CustomStyle />
+      </QueryClientProvider>
     </React.StrictMode>
   </MuiThemeProvider>,
   document.getElementById('root'),
