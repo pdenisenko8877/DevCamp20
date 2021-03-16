@@ -22,6 +22,13 @@ export default createMuiTheme({
           }
         }
       }
-    }
+    },
+    MuiDialogContent: {
+      root: {
+        '&:last-child': {
+          paddingBottom: 16,
+        },
+      },
+    },
   }
 });
