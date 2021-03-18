@@ -12,6 +12,7 @@ const layoutHorizontalPadding = theme => ({
 
 // Color
 const colorWhite = '#FFF';
+const colorGrey = '#7B8697';
 
 // Background Color
 const bgBody = '#F2F2F2';
@@ -20,5 +21,6 @@ export {
     fontFamily,
     layoutHorizontalPadding,
     colorWhite,
+    colorGrey,
     bgBody
 };

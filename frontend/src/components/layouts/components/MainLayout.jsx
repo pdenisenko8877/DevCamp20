@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cx from 'clsx';
 
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 
 import AddIcon from '@material-ui/icons/Add';
 
+import { ArticleCreateModal } from 'components/Articles';
+import useModal from 'components/Modal/hook';
 import logo from 'images/logo.svg';
 
 import styles from '../styles/main';
@@ -22,6 +24,7 @@ const useStyles = makeStyles(styles);
 
 const MainLayout = ({ children, headerAction, username }) => {
   const classes = useStyles();
+  const [openModal, modalProps] = useModal();
 
   return (
     <Container className={classes.rootContainer} maxWidth="lg">
@@ -39,8 +42,7 @@ const MainLayout = ({ children, headerAction, username }) => {
               <Button
                 variant="contained"
                 color="secondary"
-                component={Link}
-                to="/article/create"
+                onClick={openModal}
                 startIcon={<AddIcon />}
               >
                 Add Article
@@ -57,6 +59,7 @@ const MainLayout = ({ children, headerAction, username }) => {
         <Toolbar disableGutters />
         <div className={cx(classes.mainContent, classes.mainContentIndent)}>{children}</div>
       </main>
+      <ArticleCreateModal {...modalProps} />
     </Container>
   );
 };
