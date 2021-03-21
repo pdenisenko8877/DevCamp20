@@ -1,16 +1,18 @@
 const { body } = require('express-validator');
-const User = require('../models/users');
+const db = require('../configs/db.config');
 
-function unique(model, value, isUpdate) {
-  if (isUpdate) {
-    return true;
+async function unique(tableName, column, value, id) {
+  const item = await db
+    .select()
+    .from(tableName)
+    .where({ [column]: value })
+    .first();
+
+  if (item && (!id || item.id !== id)) {
+    return Promise.reject(`${value} already in use`);
   }
 
-  return model.then((exist) => {
-    if (exist) {
-      return Promise.reject(`${value} already in use`);
-    }
-  });
+  return true;
 }
 
 exports.validate = (method) => {
@@ -23,9 +25,7 @@ exports.validate = (method) => {
           .withMessage('Email is empty')
           .isEmail()
           .withMessage('Not an email')
-          .custom((value, { req }) =>
-            unique(User.findByEmail(value), value, req.params.id),
-          ),
+          .custom((value) => unique('users', 'email', value)),
         body('password')
           .exists()
           .withMessage('Password is empty')
