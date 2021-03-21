@@ -1,10 +1,16 @@
 const router = require('express').Router();
 
 const userControl = require('../controllers/user');
+const checkValidate = require('../middleware/validate');
 
-router.post('/signup', userControl.signup);
+router
+  .route('/signup')
+  .post([checkValidate.validate('createUser'), userControl.signup]);
 
-router.post('/login', userControl.login);
-router.post('/login/google', userControl.loginGoogle);
+router
+  .route('/login')
+  .post([checkValidate.validate('loginUser'), userControl.login]);
+
+router.route('/login/google').post(userControl.loginGoogle);
 
 module.exports = router;

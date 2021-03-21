@@ -1,6 +1,9 @@
 const router = require('express').Router();
+const { validationResult } = require('express-validator');
+
 const Posts = require('../models/posts');
 const checkAuthorized = require('../acl/acl');
+const checkValidate = require('../middleware/validate');
 
 router
   .route('/')
@@ -16,9 +19,17 @@ router
 
     res.send({ data, nextPage });
   })
-  .put((req, res) => {
-    Posts.createPost(req).then(res.send('Create New Post'));
-  });
+  .put([
+    checkValidate.validate('createPost'),
+    (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      Posts.createPost(req).then(res.send('Create New Post'));
+    },
+  ]);
 
 router
   .route('/:id')
@@ -27,7 +38,14 @@ router
   })
   .put([
     checkAuthorized({ table: 'posts' }),
+    checkValidate.validate('createPost'),
+
     (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
       Posts.updatePost(req).then(res.send(`Update Post ID: ${req.params.id}`));
     },
   ])
