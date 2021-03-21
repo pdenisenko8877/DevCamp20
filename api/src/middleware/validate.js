@@ -1,6 +1,18 @@
 const { body } = require('express-validator');
 const User = require('../models/users');
 
+function unique(model, value, isUpdate) {
+  if (isUpdate) {
+    return true;
+  }
+
+  return model.then((exist) => {
+    if (exist) {
+      return Promise.reject(`${value} already in use`);
+    }
+  });
+}
+
 exports.validate = (method) => {
   switch (method) {
     case 'createUser': {
@@ -11,13 +23,9 @@ exports.validate = (method) => {
           .withMessage('Email is empty')
           .isEmail()
           .withMessage('Not an email')
-          .custom((value) => {
-            return User.findByEmail(value).then((user) => {
-              if (user) {
-                return Promise.reject('E-mail already in use');
-              }
-            });
-          }),
+          .custom((value, { req }) =>
+            unique(User.findByEmail(value), value, req.params.id),
+          ),
         body('password')
           .exists()
           .withMessage('Password is empty')
