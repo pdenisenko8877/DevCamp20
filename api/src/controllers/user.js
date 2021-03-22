@@ -1,17 +1,25 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
+
 const passport = require('../auth/passport');
 const User = require('../models/users');
-const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res) => {
-  bcrypt.hash(req.body.password, 10).then(hash => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  bcrypt.hash(req.body.password, 10).then((hash) => {
     User.createUser(req, hash)
       .then(() => {
         res.status(201).json({
           message: 'User added successfully!',
         });
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({
           message: err.message,
           error: err,
@@ -20,7 +28,13 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.login = (req, res) =>
+exports.login = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   passport.authenticate(
     'local',
     {
@@ -42,6 +56,7 @@ exports.login = (req, res) =>
       res.send({ token: jwtToken });
     },
   )(req, res);
+};
 
 exports.loginGoogle = (req, res) =>
   passport.authenticate(
