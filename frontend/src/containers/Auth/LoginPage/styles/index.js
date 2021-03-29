@@ -1,6 +1,6 @@
 import { createStyles } from '@material-ui/core/styles';
 
-export default () =>
+const style = () =>
   createStyles({
     authContainer: {
       display: 'flex',
@@ -10,3 +10,5 @@ export default () =>
       minHeight: '100%',
     },
   });
+
+export default style;

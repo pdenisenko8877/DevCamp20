@@ -2,7 +2,7 @@ import { createStyles } from '@material-ui/core/styles';
 
 import { colorGrey } from 'styles/variables';
 
-export default () =>
+const style = () =>
   createStyles({
     modalTitle: {
       position: 'relative',
@@ -19,3 +19,5 @@ export default () =>
       },
     },
   });
+
+export default style;

@@ -1,13 +1,12 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import cx from 'clsx';
 
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
@@ -15,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 import { ArticleCreateModal } from 'components/Articles';
+import Dropdown from 'components/Dropdown';
 import useModal from 'components/Modal/hook';
 import logo from 'images/logo.svg';
 
@@ -25,6 +25,24 @@ const useStyles = makeStyles(styles);
 const MainLayout = ({ children, headerAction, username }) => {
   const classes = useStyles();
   const [openModal, modalProps] = useModal();
+  const history = useHistory();
+
+  const handleClickProfile = useCallback(() => {
+    history.push('/profile');
+  }, [history]);
+
+  const optionProfileList = [
+    {
+      id: 1,
+      name: 'Profile',
+      onClick: () => handleClickProfile(),
+    },
+    {
+      id: 2,
+      name: 'Logout',
+      onClick: () => {},
+    },
+  ];
 
   return (
     <Container className={classes.rootContainer} maxWidth="lg">
@@ -39,19 +57,20 @@ const MainLayout = ({ children, headerAction, username }) => {
           <Box display="flex" alignItems="center">
             {headerAction}
             <Box mr={1}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={openModal}
-                startIcon={<AddIcon />}
-              >
+              <Button variant="contained" color="secondary" onClick={openModal} startIcon={<AddIcon />}>
                 Add Article
               </Button>
             </Box>
-            <IconButton color="inherit" component={Link} to="/profile">
-              <AccountCircleIcon />
-              {username && <Box ml={1}>{username}</Box>}
-            </IconButton>
+            <Dropdown
+              buttonText={
+                <>
+                  <AccountCircleIcon />
+                  {username && <Box ml={1}>{username}</Box>}
+                </>
+              }
+              options={optionProfileList}
+              color="inherit"
+            />
           </Box>
         </Toolbar>
       </AppBar>

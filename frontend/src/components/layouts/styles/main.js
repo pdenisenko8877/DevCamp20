@@ -1,8 +1,8 @@
-import { createStyles } from '@material-ui/core/styles';
+import { createStyles, Theme } from '@material-ui/core/styles';
 
 import { layoutHorizontalPadding, colorWhite } from 'styles/variables';
 
-export default theme =>
+const style = (theme: Theme) =>
   createStyles({
     rootContainer: {
       backgroundColor: colorWhite,
@@ -52,3 +52,5 @@ export default theme =>
       },
     },
   });
+
+export default style;
